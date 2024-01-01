@@ -20,6 +20,8 @@ var scores = make(map[string]*Score)
 
 var lastPlayed = make(map[string]time.Time)
 
+var losingStreaks = make(map[string]int)
+
 type UserScore struct {
 	ID    string
 	Score *Score
@@ -52,7 +54,7 @@ func showLeaderboard(s *discordgo.Session, m *discordgo.MessageCreate) {
 func playRPS(userChoice string, userID string) (string, string) {
 	now := time.Now()
 	if lastPlayed, ok := lastPlayed[userID]; ok {
-		if now.Sub(lastPlayed) < time.Second*5 {
+		if now.Sub(lastPlayed) < time.Second*1 {
 			return "Hold on to your horses young buck. (wait 5 seconds) ", ""
 		}
 	}
@@ -69,6 +71,18 @@ func playRPS(userChoice string, userID string) (string, string) {
 	if _, ok := scores[userID]; !ok {
 		scores[userID] = &Score{}
 	}
+
+	if result == 1 {
+		losingStreaks[userID] = 0
+	} else if result == 2 {
+		losingStreaks[userID]++
+		if losingStreaks[userID] >= 2 {
+			return "OMEGA LOL.", ""
+		}
+	} else {
+		losingStreaks[userID] = 0
+	}
+
 	switch result {
 	case 0:
 		scores[userID].Ties++
@@ -94,12 +108,20 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			result, botChoice := playRPS(userChoice, m.Author.ID)
 			if botChoice == "" {
 				s.ChannelMessageSend(m.ChannelID, result)
+			} else if botChoice == "OMEGA LOL." {
+				dmChannel, err := s.UserChannelCreate(m.Author.ID)
+				if err != nil {
+					fmt.Println("error creating DM channel,", err)
+					return
+				}
+				s.ChannelMessageSend(dmChannel.ID, "You stink at this game.")
 			} else {
 				s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("%s Bot chose %s.", result, botChoice))
 			}
 		} else {
 			s.ChannelMessageSend(m.ChannelID, "Invalid choice, please choose rock, paper, or scissors.")
 		}
+
 	} else if strings.HasPrefix(m.Content, "!stats") {
 		score, ok := scores[m.Author.ID]
 		if !ok {
