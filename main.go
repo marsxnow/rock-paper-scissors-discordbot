@@ -76,7 +76,7 @@ func playRPS(userChoice string, userID string) (string, string) {
 		losingStreaks[userID] = 0
 	} else if result == 2 {
 		losingStreaks[userID]++
-		if losingStreaks[userID] >= 2 {
+		if losingStreaks[userID] >= 1 {
 			return "OMEGA LOL YOU LOST TWICE.", botChoiceString
 		}
 	} else {
@@ -107,13 +107,9 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		if _, ok := choices[userChoice]; ok {
 			result, botChoice := playRPS(userChoice, m.Author.ID)
 			if botChoice == "" {
-				s.ChannelMessageSend(m.ChannelID, result)
-				dmChannel, err := s.UserChannelCreate(m.Author.ID)
-				if err != nil {
-					fmt.Println("error creating DM channel,", err)
-					return
+				if botChoice == "" {
+					s.ChannelMessageSend(m.ChannelID, result)
 				}
-				s.ChannelMessageSend(dmChannel.ID, "OYE MATE YOU BLOW.")
 			} else {
 				s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("%s Bot chose %s.", result, botChoice))
 			}
