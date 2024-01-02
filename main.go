@@ -3,9 +3,13 @@ package main
 import (
 	"fmt"       // for printing
 	"math/rand" // for random numbers
-	"sort"
-	"strings" // for string manipulation
-	"time"    // for time manipulation
+	"sort"      // for sorting
+	"strings"   // for string manipulation
+	"time"      // for time manipulation
+
+	"encoding/json" // for json
+	"io/ioutil"     // for file reading
+	"log"           // for logging
 
 	"github.com/bwmarrin/discordgo" // for discord
 )
@@ -21,6 +25,10 @@ var scores = make(map[string]*Score)
 var lastPlayed = make(map[string]time.Time)
 
 var losingStreaks = make(map[string]int)
+
+type Config struct {
+	Token string `json:"token"`
+}
 
 type UserScore struct {
 	ID    string
@@ -76,7 +84,7 @@ func playRPS(userChoice string, userID string) (string, string) {
 		losingStreaks[userID] = 0
 	} else if result == 2 {
 		losingStreaks[userID]++
-		if losingStreaks[userID] >= 1 {
+		if losingStreaks[userID] >= 2 {
 			return "OMEGA LOL YOU LOST TWICE.", botChoiceString
 		}
 	} else {
@@ -132,7 +140,19 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	dg, err := discordgo.New("Bot MTE5MDg4NjM2NTQ1ODYwNDA1NQ.G7Bg7z.RHwDB152Vm_uPLRJt6e2y5S9FVV-jxiTQwMIF4")
+	var config Config
+
+	file, err := ioutil.ReadFile("config.json")
+	if err != nil {
+		log.Fatalf("Unable to read file: %v", err)
+	}
+
+	err = json.Unmarshal(file, &config)
+	if err != nil {
+		log.Fatalf("Unable to parse file: %v", err)
+	}
+
+	dg, err := discordgo.New("Bot " + config.Token)
 	if err != nil {
 		fmt.Println("error creating Discord session,", err)
 		return
