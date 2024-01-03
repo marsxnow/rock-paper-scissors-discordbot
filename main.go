@@ -7,9 +7,7 @@ import (
 	"strings"   // for string manipulation
 	"time"      // for time manipulation
 
-	"encoding/json" // for json
-	"io/ioutil"     // for file reading
-	"log"           // for logging
+	// for logging
 
 	"github.com/bwmarrin/discordgo" // for discord
 )
@@ -25,10 +23,6 @@ var scores = make(map[string]*Score)
 var lastPlayed = make(map[string]time.Time)
 
 var losingStreaks = make(map[string]int)
-
-type Config struct {
-	Token string `json:"token"`
-}
 
 type UserScore struct {
 	ID    string
@@ -142,50 +136,17 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 func main() {
-	rand.Seed(time.Now().UnixNano())
-	var config Config
+	config := LoadConfig("config.json")
 
-	file, err := ioutil.ReadFile("config.json")
-	if err != nil {
-		log.Fatalf("Unable to read file: %v", err)
-	}
-
-	err = json.Unmarshal(file, &config)
-	if err != nil {
-		log.Fatalf("Unable to parse file: %v", err)
-	}
-
-	dg, err := discordgo.New("Bot " + config.Token)
-	if err != nil {
-		fmt.Println("error creating Discord session,", err)
-		return
-	}
-	dg.AddHandler(messageHandler)
-	err = dg.Open()
-	if err != nil {
-		fmt.Println("error opening connection,", err)
-		return
-	}
+	dg := CreateBot(config.Token)
 
 	appID := "1190886365458604055"
 	guildID := "925145676407537724"
 
-	_, err = dg.ApplicationCommandCreate(appID, guildID, &discordgo.ApplicationCommand{
-		Name:        "dream",
-		Description: "Trigger the dream command",
-	})
-	if err != nil {
-		log.Fatalf("Unable to create command: %v", err)
-	}
+	dg.AddHandler(messageHandler)
+	CreateCommand(dg, appID, guildID)
 
-	commands, err := dg.ApplicationCommands(appID, guildID)
-	if err != nil {
-		log.Fatalf("Unable to fetch commands: %v", err)
-	}
-	for _, command := range commands {
-		fmt.Printf("Registered command: %v\n", command.Name)
-	}
-
+	// dg.AddHandler(DreamCommandHandler(dg))
 	dg.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if i.Type == discordgo.InteractionApplicationCommand {
 			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
