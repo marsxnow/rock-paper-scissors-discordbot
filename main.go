@@ -136,6 +136,9 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if strings.HasPrefix(m.Content, "!leaderboard") {
 		showLeaderboard(s, m)
 	}
+	if strings.HasPrefix(m.Content, "!dream") {
+		s.ChannelMessageSend(m.ChannelID, "When the ants come at me, It'll take 10,000, 100,000 of them to take me down. So that's how miniscule you are to my size, right. My stature of intelligence, character and body and um, Reverence in this world. No man, because I'm gonna do movies, stand up comedy, everything all the shit, music, whatever the fuck e commerce, You don't understand that you're talking to like a Michealangelo of my time, right. Like I'm a genius, Albert Einstein level, History book maker. You're gonna be forgotten like the dust in the sand when you're in the fucking sahara, and there's a hundred million thousand billion sand particles, you're gonna be one of those, and I'm gonna be a staute erected in gold.")
+	}
 }
 
 func main() {
@@ -163,6 +166,37 @@ func main() {
 		fmt.Println("error opening connection,", err)
 		return
 	}
+
+	appID := "1190886365458604055"
+	guildID := "925145676407537724"
+
+	_, err = dg.ApplicationCommandCreate(appID, guildID, &discordgo.ApplicationCommand{
+		Name:        "dream",
+		Description: "Trigger the dream command",
+	})
+	if err != nil {
+		log.Fatalf("Unable to create command: %v", err)
+	}
+
+	commands, err := dg.ApplicationCommands(appID, guildID)
+	if err != nil {
+		log.Fatalf("Unable to fetch commands: %v", err)
+	}
+	for _, command := range commands {
+		fmt.Printf("Registered command: %v\n", command.Name)
+	}
+
+	dg.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+		if i.Type == discordgo.InteractionApplicationCommand {
+			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseChannelMessageWithSource,
+				Data: &discordgo.InteractionResponseData{
+					Content: "When the ants come at me, It'll take 10,000, 100,000 of them to take me down. So that's how miniscule you are to my size, right. My stature of intelligence, character and body and um, Reverence in this world. No man, because I'm gonna do movies, stand up comedy, everything all the shit, music, whatever the fuck e commerce, You don't understand that you're talking to like a Michealangelo of my time, right. Like I'm a genius, Albert Einstein level, History book maker. You're gonna be forgotten like the dust in the sand when you're in the fucking sahara, and there's a hundred million thousand billion sand particles, you're gonna be one of those, and I'm gonna be a staute erected in gold.",
+				},
+			})
+		}
+	})
+
 	fmt.Println("Bot is now running. Press CTRL-C to exit.")
 	<-make(chan struct{})
 	return
