@@ -115,9 +115,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		if _, ok := choices[userChoice]; ok {
 			result, botChoice := playRPS(userChoice, m.Author.ID)
 			if botChoice == "" {
-				if botChoice == "" {
-					s.ChannelMessageSend(m.ChannelID, result)
-				}
+				s.ChannelMessageSend(m.ChannelID, result)
 			} else {
 				s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("%s Bot chose %s.", result, botChoice))
 			}
