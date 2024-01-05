@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -12,8 +13,8 @@ type Player struct {
 }
 
 type Game struct {
-	Player1 Player
-	Player2 Player
+	Player1 *Player
+	Player2 *Player
 }
 
 type Move int
@@ -23,6 +24,19 @@ const (
 	Paper
 	Scissors
 )
+
+func NewGame(player1ID, player1Name, player2ID, player2Name string) *Game {
+	return &Game{
+		Player1: &Player{
+			ID:   player1ID,
+			Name: player1Name,
+		},
+		Player2: &Player{
+			ID:   player2ID,
+			Name: player2Name,
+		},
+	}
+}
 
 func (m Move) String() string {
 	return [...]string{"Rock", "Paper", "Scissors"}[m]
@@ -50,17 +64,30 @@ func PlayGame(s *discordgo.Session, m *discordgo.MessageCreate, game *Game) {
 }
 
 func waitForMove(s *discordgo.Session, playerID string) Move {
-	for {
-		msg, _ := s.ChannelMessage(playerID)
-		switch msg.Content {
-		case "rock":
-			return Rock
-		case "paper":
-			return Paper
-		case "scissors":
-			return Scissors
+	moveCh := make(chan Move)
+
+	// Add a message create event handler
+	removeHandler := s.AddHandler(func(s *discordgo.Session, m *discordgo.MessageCreate) {
+		// Check if the message is from the player
+		if m.Author.ID == playerID {
+			switch strings.ToLower(m.Content) {
+			case "rock":
+				moveCh <- Rock
+			case "paper":
+				moveCh <- Paper
+			case "scissors":
+				moveCh <- Scissors
+			}
 		}
-	}
+	})
+
+	// Wait for a move from the player
+	move := <-moveCh
+
+	// Remove the message create event handler
+	removeHandler()
+
+	return move
 }
 
 func determineWinner(game *Game, player1Move Move, player2Move Move) string {

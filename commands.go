@@ -42,16 +42,15 @@ func StartGameCommandHandler(s *discordgo.Session) func(*discordgo.InteractionCr
 			data := i.Data.(*discordgo.ApplicationCommandInteractionData)
 			if data.Name == "startgame" {
 				// Extract user IDs from command arguments
-				player1ID := data.Options[0].UserValue(s).ID
-				player1Name := data.Options[0].UserValue(s).Username
-				player2ID := data.Options[1].UserValue(s).ID
-				player2Name := data.Options[1].UserValue(s).Username
+
+				player1ID := data.Options[0].UserValue(s).Username
+
+				player2ID := data.Options[1].UserValue(s).Username
 
 				// Create a new game
-				game := NewGame(player1ID, player1Name, player2ID, player2Name)
-
+				game := NewGame(player1ID, "Player 1", player2ID, "Player 2")
 				// Start the game
-				PlayGame(s, i.Message, game)
+				PlayGame(s, &discordgo.MessageCreate{Message: i.Message}, game)
 			}
 		}
 	}

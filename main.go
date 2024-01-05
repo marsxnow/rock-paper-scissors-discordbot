@@ -141,7 +141,7 @@ func main() {
 	dg := CreateBot(config.Token)
 
 	appID := "1190886365458604055"
-	guildID := "1192264999071125545"
+	guildID := "925145676407537724"
 
 	dg.AddHandler(messageHandler)
 	CreateCommand(dg, appID, guildID)
