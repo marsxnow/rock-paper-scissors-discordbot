@@ -27,28 +27,30 @@ func CreateCommand(dg *discordgo.Session, appID string, guildID string) {
 // Define command handler function
 func DreamCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	if i.Type == discordgo.InteractionApplicationCommand {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Content: "When the ants come at me, It'll take 10,000, 100,000 of them to take me down. So that's how miniscule you are to my size, right. My stature of intelligence, character and body and um, Reverence in this world. No man, because I'm gonna do movies, stand up comedy, everything all the shit, music, whatever the fuck e commerce, You don't understand that you're talking to like a Michealangelo of my time, right. Like I'm a genius, Albert Einstein level, History book maker. You're gonna be forgotten like the dust in the sand when you're in the fucking sahara, and there's a hundred million thousand billion sand particles, you're gonna be one of those, and I'm gonna be a staute erected in gold.",
-			},
-		})
+		data := i.Data.(*discordgo.ApplicationCommandInteractionData)
+		if data.Name == "dream" {
+			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseChannelMessageWithSource,
+				Data: &discordgo.InteractionResponseData{
+					Content: "When the ants come at me, It'll take 10,000, 100,000 of them to take me down. So that's how miniscule you are to my size, right. My stature of intelligence, character and body and um, Reverence in this world. No man, because I'm gonna do movies, stand up comedy, everything all the shit, music, whatever the fuck e commerce, You don't understand that you're talking to like a Michealangelo of my time, right. Like I'm a genius, Albert Einstein level, History book maker. You're gonna be forgotten like the dust in the sand when you're in the fucking sahara, and there's a hundred million thousand billion sand particles, you're gonna be one of those, and I'm gonna be a staute erected in gold.",
+				},
+			})
+		}
 	}
 }
 
-func StartGameCommandHandler(s *discordgo.Session) func(*discordgo.InteractionCreate) {
+func OneVsOneCommandHandler(s *discordgo.Session) func(*discordgo.InteractionCreate) {
 	return func(i *discordgo.InteractionCreate) {
 		if i.Type == discordgo.InteractionApplicationCommand {
 			data := i.Data.(*discordgo.ApplicationCommandInteractionData)
-			if data.Name == "startgame" {
+			if data.Name == "1v1" {
 				// Extract user IDs from command arguments
-
 				player1ID := data.Options[0].UserValue(s).Username
-
 				player2ID := data.Options[1].UserValue(s).Username
 
 				// Create a new game
 				game := NewGame(player1ID, "Player 1", player2ID, "Player 2")
+
 				// Start the game
 				PlayGame(s, &discordgo.MessageCreate{Message: i.Message}, game)
 			}

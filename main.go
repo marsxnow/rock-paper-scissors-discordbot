@@ -144,7 +144,6 @@ func main() {
 	dg.AddHandler(messageHandler)
 	CreateCommand(dg, appID, guildID)
 
-	// dg.AddHandler(DreamCommandHandler(dg))
 	dg.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if i.Type == discordgo.InteractionApplicationCommand {
 			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
