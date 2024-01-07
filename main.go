@@ -131,6 +131,38 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if strings.HasPrefix(m.Content, "!dream") {
 		s.ChannelMessageSend(m.ChannelID, "When the ants come at me, It'll take 10,000, 100,000 of them to take me down. So that's how miniscule you are to my size, right. My stature of intelligence, character and body and um, Reverence in this world. No man, because I'm gonna do movies, stand up comedy, everything all the shit, music, whatever the fuck e commerce, You don't understand that you're talking to like a Michealangelo of my time, right. Like I'm a genius, Albert Einstein level, History book maker. You're gonna be forgotten like the dust in the sand when you're in the fucking sahara, and there's a hundred million thousand billion sand particles, you're gonna be one of those, and I'm gonna be a staute erected in gold.")
 	}
+	if strings.HasPrefix(m.Content, "!dan") {
+		s.ChannelMessageSend(m.ChannelID, "Cock and Balls")
+		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+			Embed: &discordgo.MessageEmbed{
+				Image: &discordgo.MessageEmbedImage{
+					URL: "https://tenor.com/view/kiss-anime-gif-25489406",
+				},
+			},
+		})
+	}
+	if strings.HasPrefix(m.Content, "!john") {
+		s.ChannelMessageSend(m.ChannelID, "Cock and Balls")
+	}
+	if strings.HasPrefix(m.Content, "!aaron") {
+		s.ChannelMessageSend(m.ChannelID, "Cock and Balls")
+	}
+	if strings.HasPrefix(m.Content, "!jaden") {
+		s.ChannelMessageSend(m.ChannelID, "Cock and Balls")
+	}
+	if strings.HasPrefix(m.Content, "!rax") {
+		s.ChannelMessageSend(m.ChannelID, "goat")
+	}
+	if strings.HasPrefix(m.Content, "!chad") {
+		s.ChannelMessageSend(m.ChannelID, "boba fondler")
+	}
+	if strings.HasPrefix(m.Content, "!jocelyn") {
+		s.ChannelMessageSend(m.ChannelID, "Cock and Balls")
+	}
+	if strings.HasPrefix(m.Content, "!tiffany") {
+		s.ChannelMessageSend(m.ChannelID, "Cock and Balls")
+	}
+
 }
 
 func main() {
