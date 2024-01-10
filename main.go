@@ -136,31 +136,80 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
 			Embed: &discordgo.MessageEmbed{
 				Image: &discordgo.MessageEmbedImage{
-					URL: "https://tenor.com/view/kiss-anime-gif-25489406",
+					URL: "https://cdn.discordapp.com/attachments/821968732209283073/1193496949832298496/kiss-anime.gif?ex=65aceda6&is=659a78a6&hm=11bd484498f33f82f84c61a1a06cec7395f1897c881f40cd871b81e7859bbf79&",
 				},
 			},
 		})
 	}
 	if strings.HasPrefix(m.Content, "!john") {
 		s.ChannelMessageSend(m.ChannelID, "Cock and Balls")
+		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+			Embed: &discordgo.MessageEmbed{
+				Image: &discordgo.MessageEmbedImage{
+					URL: "https://media.discordapp.net/attachments/756680254705238063/875992997035139072/image0.gif?ex=65ab6b8d&is=6598f68d&hm=10a5b3627e273fdff47e0931b03975cafd396c9f6b81170779997566a0f6d6c7&",
+				},
+			},
+		})
 	}
 	if strings.HasPrefix(m.Content, "!aaron") {
 		s.ChannelMessageSend(m.ChannelID, "Cock and Balls")
+		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+			Embed: &discordgo.MessageEmbed{
+				Image: &discordgo.MessageEmbedImage{
+					URL: "https://cdn.discordapp.com/attachments/821968732209283073/1193498365829328957/maidenless-bitchless.gif?ex=65aceef8&is=659a79f8&hm=4b21e130a162d66e2f98bb1dd040787e2df1fa598f54f426624d73a73118044f&",
+				},
+			},
+		})
 	}
 	if strings.HasPrefix(m.Content, "!jaden") {
 		s.ChannelMessageSend(m.ChannelID, "Cock and Balls")
+		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+			Embed: &discordgo.MessageEmbed{
+				Image: &discordgo.MessageEmbedImage{
+					URL: "https://cdn.discordapp.com/attachments/821968732209283073/1194437211953844234/yappin.gif?ex=65b05956&is=659de456&hm=4e6d076c416381c06868ba2b4cebbeda98ac65fadae7ef80cd1b7cc0d8a39d1a&",
+				},
+			},
+		})
 	}
 	if strings.HasPrefix(m.Content, "!rax") {
 		s.ChannelMessageSend(m.ChannelID, "goat")
+		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+			Embed: &discordgo.MessageEmbed{
+				Image: &discordgo.MessageEmbedImage{
+					URL: "https://cdn.discordapp.com/attachments/821968732209283073/1193496023226646539/goat.gif?ex=65acecca&is=659a77ca&hm=5be62955ea4ddd5a8a34324752a4a224a4f3019debfa4e21b38afae60b749d56&",
+				},
+			},
+		})
 	}
 	if strings.HasPrefix(m.Content, "!chad") {
 		s.ChannelMessageSend(m.ChannelID, "boba fondler")
+		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+			Embed: &discordgo.MessageEmbed{
+				Image: &discordgo.MessageEmbedImage{
+					URL: "https://cdn.discordapp.com/attachments/821968732209283073/1194436148408356944/fondle.gif?ex=65b05859&is=659de359&hm=ebcea77672eaedfae33a951356095c254365020510200cc7ae64c3488f7f7644&",
+				},
+			},
+		})
 	}
 	if strings.HasPrefix(m.Content, "!jocelyn") {
-		s.ChannelMessageSend(m.ChannelID, "Cock and Balls")
+		s.ChannelMessageSend(m.ChannelID, "goat #2")
+		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+			Embed: &discordgo.MessageEmbed{
+				Image: &discordgo.MessageEmbedImage{
+					URL: "https://cdn.discordapp.com/attachments/821968732209283073/1193499882636447816/richarlison-tottenham.gif?ex=65acf062&is=659a7b62&hm=329f65ba726087b5cf31ead49935fe4551296b53f7b70fc0bc8d53f175c123ba&",
+				},
+			},
+		})
 	}
 	if strings.HasPrefix(m.Content, "!tiffany") {
 		s.ChannelMessageSend(m.ChannelID, "Cock and Balls")
+		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+			Embed: &discordgo.MessageEmbed{
+				Image: &discordgo.MessageEmbedImage{
+					URL: "https://cdn.discordapp.com/attachments/821968732209283073/1194439177366933624/amonguss.gif?ex=65b05b2b&is=659de62b&hm=e582f267d05a12917782494ab87d051ff4ac77545039ce0de0a9569326370b4c&",
+				},
+			},
+		})
 	}
 
 }
