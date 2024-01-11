@@ -225,6 +225,32 @@ func main() {
 	dg.AddHandler(messageHandler)
 	CreateCommand(dg, appID, guildID)
 
+	dg.AddHandler(func(s *discordgo.Session, m *discordgo.MessageCreate) {
+		// Ignore messages from the bot itself
+		if m.Author.ID == s.State.User.ID {
+			return
+		}
+
+		// Check if the message starts with "!rps"
+		if strings.HasPrefix(m.Content, "!rps") {
+			// Extract the mentioned user
+			if len(m.Mentions) == 0 {
+				s.ChannelMessageSend(m.ChannelID, "You need to mention a user to play with!")
+				return
+			}
+			mentionedUser := m.Mentions[0]
+
+			// Create a new game
+			game := NewGame(m.Author.ID, m.Author.Username, mentionedUser.ID, mentionedUser.Username)
+
+			// Start the game
+			PlayGame(s, m, game)
+
+			// Send a message to indicate that the game has started
+			s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("Starting a 1v1 game between %s and %s!", m.Author.Username, mentionedUser.Username))
+		}
+	})
+
 	dg.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if i.Type == discordgo.InteractionApplicationCommand {
 			switch i.ApplicationCommandData().Name {
