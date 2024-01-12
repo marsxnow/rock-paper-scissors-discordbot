@@ -63,18 +63,18 @@ func KittenCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) 
 	}
 }
 
-func SongOfTheDayCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	if i.Type == discordgo.InteractionApplicationCommand {
-		data := i.ApplicationCommandData()
-		if data.Name == "song" {
-			songOfTheDayLink := "https://music.youtube.com/watch?v=2PVUZ5ZX79Q&si=E5-rQ8Y98YgZRXqI"
+// func SongOfTheDayCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
+// 	if i.Type == discordgo.InteractionApplicationCommand {
+// 		data := i.ApplicationCommandData()
+// 		if data.Name == "song" {
+// 			songOfTheDayLink := "https://music.youtube.com/watch?v=2PVUZ5ZX79Q&si=E5-rQ8Y98YgZRXqI"
 
-			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-				Type: discordgo.InteractionResponseChannelMessageWithSource,
-				Data: &discordgo.InteractionResponseData{
-					Content: songOfTheDayLink,
-				},
-			})
-		}
-	}
-}
+// 			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+// 				Type: discordgo.InteractionResponseChannelMessageWithSource,
+// 				Data: &discordgo.InteractionResponseData{
+// 					Content: songOfTheDayLink,
+// 				},
+// 			})
+// 		}
+// 	}
+// }
