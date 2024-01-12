@@ -19,6 +19,11 @@ func CreateCommand(dg *discordgo.Session, appID string, guildID string) {
 			Description: "Trigger the kitten command",
 			Options:     []*discordgo.ApplicationCommandOption{},
 		},
+		{
+			Name:        "song",
+			Description: "get the song of the day",
+			Options:     []*discordgo.ApplicationCommandOption{},
+		},
 		//add more for later
 	}
 	for _, command := range commands {
@@ -52,6 +57,22 @@ func KittenCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) 
 				Type: discordgo.InteractionResponseChannelMessageWithSource,
 				Data: &discordgo.InteractionResponseData{
 					Content: "🫵",
+				},
+			})
+		}
+	}
+}
+
+func SongOfTheDayCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	if i.Type == discordgo.InteractionApplicationCommand {
+		data := i.ApplicationCommandData()
+		if data.Name == "song" {
+			songOfTheDayLink := "https://music.youtube.com/watch?v=2PVUZ5ZX79Q&si=E5-rQ8Y98YgZRXqI"
+
+			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseChannelMessageWithSource,
+				Data: &discordgo.InteractionResponseData{
+					Content: songOfTheDayLink,
 				},
 			})
 		}
