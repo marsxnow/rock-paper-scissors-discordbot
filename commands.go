@@ -57,22 +57,3 @@ func KittenCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) 
 		}
 	}
 }
-
-func OneVsOneCommandHandler(s *discordgo.Session) func(*discordgo.InteractionCreate) {
-	return func(i *discordgo.InteractionCreate) {
-		if i.Type == discordgo.InteractionApplicationCommand {
-			data := i.Data.(*discordgo.ApplicationCommandInteractionData)
-			if data.Name == "1v1" {
-				// Extract user IDs from command arguments
-				player1ID := data.Options[0].UserValue(s).Username
-				player2ID := data.Options[1].UserValue(s).Username
-
-				// Create a new game
-				game := NewGame(player1ID, "Player 1", player2ID, "Player 2")
-
-				// Start the game
-				PlayGame(s, &discordgo.MessageCreate{Message: i.Message}, game)
-			}
-		}
-	}
-}

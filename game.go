@@ -46,14 +46,22 @@ func PlayGame(s *discordgo.Session, m *discordgo.MessageCreate, game *Game) {
 	// Send message to channel that game is starting
 	s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("Starting game between %s and %s", game.Player1.Name, game.Player2.Name))
 
-	// Wait for a message for either player
-	player1Move := waitForMove(s, game.Player1.ID)
-	player2Move := waitForMove(s, game.Player2.ID)
+	// Create a channel to receive the moves from the players
+	player1MoveCh := make(chan Move)
+	player2MoveCh := make(chan Move)
 
-	// Determine winner
+	// Start goroutines to wait for the moves from the players
+	go waitForMove(s, game.Player1.ID, player1MoveCh)
+	go waitForMove(s, game.Player2.ID, player2MoveCh)
+
+	// Wait for both players to make their moves
+	player1Move := <-player1MoveCh
+	player2Move := <-player2MoveCh
+
+	// Determine the winner
 	winner := determineWinner(game, player1Move, player2Move)
 
-	// Announce Winner
+	// Send message to channel with the winner
 	if winner == game.Player1.ID {
 		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("%s won!", game.Player1.Name))
 	} else if winner == game.Player2.ID {
@@ -61,11 +69,10 @@ func PlayGame(s *discordgo.Session, m *discordgo.MessageCreate, game *Game) {
 	} else {
 		s.ChannelMessageSend(m.ChannelID, "It's a tie!")
 	}
+
 }
 
-func waitForMove(s *discordgo.Session, playerID string) Move {
-	moveCh := make(chan Move)
-
+func waitForMove(s *discordgo.Session, playerID string, moveCh chan<- Move) {
 	// Add a message create event handler
 	removeHandler := s.AddHandler(func(s *discordgo.Session, m *discordgo.MessageCreate) {
 		// Check if the message is from the player
@@ -81,13 +88,8 @@ func waitForMove(s *discordgo.Session, playerID string) Move {
 		}
 	})
 
-	// Wait for a move from the player
-	move := <-moveCh
-
 	// Remove the message create event handler
 	removeHandler()
-
-	return move
 }
 
 func determineWinner(game *Game, player1Move Move, player2Move Move) string {
