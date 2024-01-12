@@ -19,6 +19,11 @@ func CreateCommand(dg *discordgo.Session, appID string, guildID string) {
 			Description: "Trigger the kitten command",
 			Options:     []*discordgo.ApplicationCommandOption{},
 		},
+		{
+			Name:        "song",
+			Description: "get the song of the day",
+			Options:     []*discordgo.ApplicationCommandOption{},
+		},
 		//add more for later
 	}
 	for _, command := range commands {
@@ -58,21 +63,18 @@ func KittenCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) 
 	}
 }
 
-func OneVsOneCommandHandler(s *discordgo.Session) func(*discordgo.InteractionCreate) {
-	return func(i *discordgo.InteractionCreate) {
-		if i.Type == discordgo.InteractionApplicationCommand {
-			data := i.Data.(*discordgo.ApplicationCommandInteractionData)
-			if data.Name == "1v1" {
-				// Extract user IDs from command arguments
-				player1ID := data.Options[0].UserValue(s).Username
-				player2ID := data.Options[1].UserValue(s).Username
+func SongOfTheDayCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	if i.Type == discordgo.InteractionApplicationCommand {
+		data := i.ApplicationCommandData()
+		if data.Name == "song" {
+			songOfTheDayLink := "https://music.youtube.com/watch?v=2PVUZ5ZX79Q&si=E5-rQ8Y98YgZRXqI"
 
-				// Create a new game
-				game := NewGame(player1ID, "Player 1", player2ID, "Player 2")
-
-				// Start the game
-				PlayGame(s, &discordgo.MessageCreate{Message: i.Message}, game)
-			}
+			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseChannelMessageWithSource,
+				Data: &discordgo.InteractionResponseData{
+					Content: songOfTheDayLink,
+				},
+			})
 		}
 	}
 }
