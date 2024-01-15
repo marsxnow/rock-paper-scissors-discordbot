@@ -14,6 +14,9 @@ var songList = []string{
 	"https://music.youtube.com/watch?v=peUjZ3n18Uk&si=9iGNCC9WzObbGx_z",
 	"https://music.youtube.com/watch?v=2uRU2iqcqCU&si=bZQtn55ClP52k1qu",
 	"https://music.youtube.com/watch?v=ea5w1VqzVIY&si=3cGx5Z7fKPD4O276",
+	"https://music.youtube.com/watch?v=Th8v0EZiDik&si=BLNWWEMwL4HmC5Rj",
+	"https://music.youtube.com/watch?v=3jivtkBiffo&si=O6EmKHsW_riS-U4S",
+	"https://music.youtube.com/watch?v=HobyZ5pyVVI&si=EwhwsBZTJZIwz7n_",
 }
 
 func SongOfTheDayCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
