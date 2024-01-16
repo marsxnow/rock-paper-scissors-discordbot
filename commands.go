@@ -29,6 +29,18 @@ func CreateCommand(dg *discordgo.Session, appID string, guildID string) {
 			Description: "natanaeaaaaaaa",
 			Options:     []*discordgo.ApplicationCommandOption{},
 		},
+		{
+			Name:        "lol",
+			Description: "Get a player's win/loss stats",
+			Options: []*discordgo.ApplicationCommandOption{
+				{
+					Type:        discordgo.ApplicationCommandOptionString,
+					Name:        "player",
+					Description: "The name of the player",
+					Required:    true,
+				},
+			},
+		},
 		//add more for later
 	}
 	for _, command := range commands {

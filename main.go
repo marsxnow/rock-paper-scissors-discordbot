@@ -226,6 +226,7 @@ func main() {
 	CreateCommand(dg, appID, guildID)
 	dg.AddHandler(SongOfTheDayCommandHandler)
 	dg.AddHandler(CorridosCommandHandler)
+	dg.AddHandler(LolCommandHandler)
 	dg.AddHandler(func(s *discordgo.Session, m *discordgo.MessageCreate) {
 		// Ignore messages from the bot itself
 		if m.Author.ID == s.State.User.ID {
